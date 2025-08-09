@@ -15,6 +15,9 @@ export default function ListView({
   onSortAsc: () => void;
   onSortDesc: () => void;
 }) {
+  const maxNum = list.length > 0 ? Math.max(...list) : null;
+  const minNum = list.length > 0 ? Math.min(...list) : null;
+
   return (
     <div className="card p-3">
       <h3 className="mb-3 text-dark">Numbers List</h3>
@@ -28,7 +31,7 @@ export default function ListView({
         </button>
         <button 
           onClick={onSortAsc} 
-          className="btn btn-secondary btn-sm"
+          className="btn btn-success btn-sm"
         >
           Sort Ascending
         </button>
@@ -44,20 +47,26 @@ export default function ListView({
         <p className="text-muted">No numbers yet</p>
       )}
 
-      {list.map((num, i) => (
-        <div 
-          key={i} 
-          className="d-flex justify-content-between align-items-center border-bottom py-1"
-        >
-          <span className="text-dark">{num} #{i + 1}</span>
-          <button 
-            onClick={() => onRemove(i)} 
-            className="btn btn-outline-danger btn-sm"
+      {list.map((num, i) => {
+        let highlightClass = "";
+        if (num === maxNum) highlightClass = "bg-success text-white fw-bold"; // highest
+        if (num === minNum) highlightClass = "bg-warning fw-bold"; // lowest
+
+        return (
+          <div 
+            key={i} 
+            className={`d-flex justify-content-between align-items-center border-bottom py-1 px-2 rounded ${highlightClass}`}
           >
-            ×
-          </button>
-        </div>
-      ))}
+            <span>{num} #{i + 1}</span>
+            <button 
+              onClick={() => onRemove(i)} 
+              className="btn btn-outline-danger btn-sm"
+            >
+              ×
+            </button>
+          </div>
+        );
+      })}
 
       <p className="mt-3 fw-bold">Total numbers: {list.length}</p>
     </div>
