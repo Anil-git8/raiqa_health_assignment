@@ -1,9 +1,10 @@
 "use client";
+
 import { useState } from "react";
 import Counter from "../component/Counter";
 import ListView from "../component/ListView";
 
-export default function main() {
+export default function Main() {
   const [list, setList] = useState<number[]>([]);
 
   function addToList(num: number) {
